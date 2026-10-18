@@ -266,7 +266,7 @@ def breadthFirstSearch(search_problem):
     num_visited = 0
     structure = util.Queue()
     structure.push((search_problem.getStartState(), [])) # DEFINE THE INITIAL STATE
-    visited = []
+    visited = set()
 
     while not structure.isEmpty():
         path = structure.pop()
@@ -277,7 +277,7 @@ def breadthFirstSearch(search_problem):
             return num_visited, path_list # RETURN THE PATH OF STATES
 
         if current_state not in visited:
-            visited.append(current_state)
+            visited.add(current_state)
             num_visited += 1
 
             for successor in search_problem.getSuccessors(current_state):
@@ -306,7 +306,8 @@ def heuristic1(state, search_problem=None):
     if (search_problem and search_problem.isGoalState(state)):
         return 0
     
-    corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    all_corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    corners = [c for c in all_corners if c not in state.board]
     min_dist = float('inf')
 
     for (x, y) in state.board.keys():
@@ -320,11 +321,13 @@ def heuristic1(state, search_problem=None):
     else:
         return min_dist
 
+
 def heuristic2(state, search_problem=None):
     if (search_problem and search_problem.isGoalState(state)):
         return 0
     
-    corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    all_corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    corners = [c for c in all_corners if c not in state.board]
     min_dist = float('inf')
 
     for (x, y) in state.board.keys():
@@ -339,12 +342,12 @@ def heuristic2(state, search_problem=None):
         return min_dist
 
 
-
 def heuristic3(state, search_problem=None):
     if (search_problem and search_problem.isGoalState(state)):
         return 0
     
-    corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    all_corners = [(1, 1), (1, state.height), (state.width, 1), (state.width, state.height)]
+    corners = [c for c in all_corners if c not in state.board]
     min_dist = float('inf')
     moves = state.legalMoves()
 
@@ -370,7 +373,7 @@ def aStarSearch(search_problem, heuristic=nullHeuristic):
     state_ini = search_problem.getStartState()
     h_ini = heuristic(state_ini, search_problem)
     structure.push((state_ini, [], 0), h_ini) # DEFINE THE INITIAL STATE
-    visited = []
+    visited = set()
 
     while not structure.isEmpty():
         path = structure.pop()
@@ -382,7 +385,7 @@ def aStarSearch(search_problem, heuristic=nullHeuristic):
             return num_visited, path_list # RETURN THE PATH OF STATES
 
         if current_state not in visited:
-            visited.append(current_state)
+            visited.add(current_state)
             num_visited += 1
 
             for successor in search_problem.getSuccessors(current_state):
@@ -441,9 +444,9 @@ if __name__ == '__main__':
     print('Initial state after %d iterations:' % (iterations_initial_state))
     print(reversi_state)
 
-    problem = CornerReversiSearchProblem(reversi_state)
+    #problem = CornerReversiSearchProblem(reversi_state)
     # for question 1.7
-    # problem = AllCornersReversiSearchProblem(reversi_state)
+    problem = AllCornersReversiSearchProblem(reversi_state)
     print('Problem to be solved: %s' % (problem.__class__))
 
     # game tree

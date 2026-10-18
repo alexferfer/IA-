@@ -54,8 +54,8 @@ player2_minimax_alpha_beta = Player(
 
 # Select players
 
-# player1, player2 = player1_minimax, player2_minimax
-player1, player2 = player1_minimax_alpha_beta, player2_minimax_alpha_beta
+player1, player2 = player1_minimax, player2_minimax
+#player1, player2 = player1_minimax_alpha_beta, player2_minimax_alpha_beta
 
 game = SimpleGameTree(
     player1=player1,
